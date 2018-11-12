@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Заметки</title>
+</head>
+<body>
+	<div id="app" class="col-12 text-center">
+	  <button v-if="!addShown" v-on:click="editShow" class="btn btn btn-primary col-4">Добавить заметку</button><br>
+	  <!-- <input v-if="addShown" v-model="message" autocomplete="off">
+	  <button v-if="addShown" v-on:click="addItem">Save</button> -->
+	  	<div v-if="addShown" class="form-group col-12 row justify-content-center" >
+	  		<form @submit.prevent="addItem" class="border p-2 rounded">
+	  			<div>
+				    <label>Текст заметки:</label>
+				    <br>
+					<input v-model="message" autocomplete="off" class="form-control">
+				</div>
+				<div>
+					<label class="">Уточнить важность:</label>
+				    <br>
+					<select v-model="selected" class="form-control">
+						<option value="im">ВАЖНО</option>
+						<option value="notim">не важно</option>
+					</select>
+	  			</div>
+	  			<div>
+					<label>Поставить напоминание?</label>
+					<input type="radio" id="remOn" value="remOn" v-model="picked">
+					<label for="remOn">Да</label>
+					<input type="radio" id="remOff" value="remOff" v-model="picked" checked>
+					<label for="remOff">Нет</label>
+				</div>
+				<div>
+				    <button type="submit" class="btn btn-success float-right">Сохр.</button>
+				</div>
+			</form>
+		</div>
+
+		<div v-if="tableShown" >
+			<div v-if="!list.length">Заметок пока нет</div>
+			<div v-else>Заметок: {{ list.length }} шт.</div>
+			
+			<div class="col-12 row justify-content-center">
+			<table border="1" v-if="list.length" class="table table-hover col-6">
+			    <thead>
+			        <tr>
+			            <th scope="col">#</th>
+			            <th scope="col">Заметка</th>
+			            <th scope="col">Управление</th>
+			            <th scope="col">Пометить на удаление</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        <tr v-for="(item, index) in list">
+			            <td scope="row">{{ index + 1 }}</td>
+			            <td>{{ item }}</td>
+			            <td>
+			                <button @click="editItem(item)" class="btn btn-success">edit</button>
+			                <button @click="delItem(item)" class="btn btn-danger">del</button>
+			            </td>
+			            <td><input type="checkbox" :value=index v-model="checkedItems"></td>
+			        </tr>
+			    </tbody>
+			</table>
+			</div>
+			<button v-if="list.length" v-on:click="delItems" class="btn btn-danger">Удалить выбранные</button>
+		</div>
+
+		<div v-if="editShown" class="col-12 row justify-content-center">
+	  		<form @submit.prevent="saveEdit" class="border p-2 rounded mt-2 col-4 ml-4">
+	  			
+	  			<div>
+				    <label class="">Текст заметки:</label>
+				    <br>
+					<input v-model="editText" class="form-control">
+				</div>
+				<div>
+					<label class="">Уточнить важность:</label>
+				    <br><select v-model="selected" class="form-control">
+						<option value="im">ВАЖНО</option>
+						<option value="notim">не важно</option>
+					</select>
+	  			</div>
+	  			<div class="mt-2">
+					<label>Поставить напоминание?</label>
+					<input type="radio" id="remOn" value="remOn" v-model="picked">
+					<label for="remOn">Да</label>
+					<input type="radio" id="remOff" value="remOff" v-model="picked" checked>
+					<label for="remOff">Нет</label>
+				</div>
+				
+	  			<div>
+				    <button v-on:click="back" class="btn btn-danger">Назад</button>
+				    <button type="submit" class="btn btn-success">Сохр.</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script src="app.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</body>
+</html>
